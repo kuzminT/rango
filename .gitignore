@@ -5,6 +5,6 @@ env_rango/
 */__pycache__/
 */uwsgi_params
 *.sqlite3
-
+.idea
 
 
