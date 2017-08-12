@@ -1,0 +1,10 @@
+env_rango/
+*.sock
+*.txt
+*.pyc
+*/__pycache__/
+*/uwsgi_params
+*.sqlite3
+
+
+

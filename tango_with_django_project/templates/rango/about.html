@@ -1,0 +1,13 @@
+{% extends 'rango/base.html' %}
+{% load staticfiles %}
+{% block title_block %}
+About us
+{% endblock %}
+{% block body_block %}
+<p>visits: {{ visits }}</p>
+<h1>About page</h1>
+<div>
+    <strong>This tutorial has been put together by {{author}}</strong> <br />
+      <img style="max-width:400px" src="{% static 'images/malta.jpg' %}" alt="Malta">
+</div>
+{% endblock %}
