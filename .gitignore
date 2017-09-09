@@ -3,8 +3,9 @@ env_rango/
 *.txt
 *.pyc
 */__pycache__/
-*/uwsgi_params
 *.sqlite3
 .idea
-
-
+rango_nginx.conf
+tch
+env/
+log/

@@ -1,6 +1,11 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+
+from django.conf import settings
+from django.core.cache.backends.base import DEFAULT_TIMEOUT
+
 from datetime import datetime
+from django.views.decorators.cache import cache_page
 
 # Import the Category model
 from .models import Category, Page
@@ -11,6 +16,8 @@ from django.contrib.auth import authenticate, login
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
+
+CACHE_TTL = getattr(settings, 'CACHE_TTL', DEFAULT_TIMEOUT)
 
 
 def register(request):
@@ -75,12 +82,7 @@ def register(request):
                    })
 
 
-
-
-
-# def index(request):
-#     return HttpResponse("Rango says hey there partner! <br /> <a href='/rango/about/'>About</a>")
-
+#@cache_page(CACHE_TTL)
 def index(request):
     request.session.set_test_cookie()
     # Construct a dictionary to pass to the template engine as its context.
@@ -105,7 +107,7 @@ def about(request):
     response =  render(request, 'rango/about.html', context=context_dict)
     return response
 
-
+@cache_page(CACHE_TTL)
 def show_category(request, category_name_slug):
     # Create a context dictionary which we can pass
     # to the template rendering engine.
@@ -269,7 +271,7 @@ def visitor_cookie_handler(request):
                                          '%Y-%m-%d %H:%M:%S')
 
     # If it's been more than a day since the last visit...
-    if (datetime.now() - last_visit_time).seconds > 0:
+    if (datetime.now() - last_visit_time).seconds > 1:
         visits =  visits + 1
         # update the last visit cookie now that we have updated the count
         request.session['last_visit'] = str(datetime.now())
