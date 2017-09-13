@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 {% load staticfiles %}
+{% load compress %}
 {% load rango_template_tags %}
 <html lang="ru">
 <head>
@@ -9,6 +10,9 @@
         How to Tango with Django!
         {% endblock %}
     </title>
+    {% compress css %}
+<link rel="stylesheet"  href="{% static 'css/styles.css' %}" />
+    {% endcompress %}
 </head>
 <body>
 <div>

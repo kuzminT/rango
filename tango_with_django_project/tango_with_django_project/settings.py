@@ -1,8 +1,6 @@
 # coding: utf-8
-
 import os
 from options.main import *
-
 
 """
 Django settings for tango_with_django_project project.
@@ -15,8 +13,6 @@ https://docs.djangoproject.com/en/1.11/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.11/ref/settings/
 """
-
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
@@ -54,7 +50,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'django.template.context_processors.media'
+                'django.template.context_processors.media',
+                'context_processors.user_ip.user_ip'
             ],
         },
     },
@@ -64,6 +61,11 @@ TEMPLATES = [
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [STATIC_DIR, MEDIA_DIR]
+
+STATICFILES_FINDERS =  ('compressor.finders.CompressorFinder',
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+                        )
 
 ADMIN_MEDIA_PREFIX = '/static/admin/'
 

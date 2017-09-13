@@ -16,6 +16,7 @@ from django.contrib.auth import authenticate, login
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
+# from tango_with_django
 
 CACHE_TTL = getattr(settings, 'CACHE_TTL', DEFAULT_TIMEOUT)
 
@@ -84,6 +85,7 @@ def register(request):
 
 #@cache_page(CACHE_TTL)
 def index(request):
+    print(settings.user_ip)
     request.session.set_test_cookie()
     # Construct a dictionary to pass to the template engine as its context.
     # Note the key boldmessage is the same as {{ boldmessage }} in the template!

@@ -9,6 +9,7 @@ howdy, {{ user.username }}!
 {% else %}
 hey there partner!
 {% endif %}
+Твой ip  - {{ user_ip }}
 <p>visits: {{ visits }}</p>
 <div>
     {% if categories %}
@@ -33,6 +34,6 @@ hey there partner!
         <strong>There are no pages present.</strong>
     {% endif %}
 </div>
-<img style="max-width:400px" src="{% static 'images/malta.jpg' %}" alt="Malta">
+<img class="main-img" src="{% static 'images/malta.jpg' %}" alt="Malta">
 <br />
 {% endblock %}
