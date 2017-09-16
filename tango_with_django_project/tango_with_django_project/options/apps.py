@@ -9,6 +9,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rango',
     'registration',
+    'comments',
     'compressor'
     ]
 
