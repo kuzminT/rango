@@ -51,9 +51,15 @@ class UserForm(forms.ModelForm):
         model = User
         fields = ('username', 'email', 'password')
 
+
 class UserProfileForm(forms.ModelForm):
+    website = forms.URLField(required=False)
+    picture = forms.ImageField(required=False)
+
     class Meta:
         model =  UserProfile
-        fields = ('website', 'picture')
+        # fields = ('website', 'picture')
+        exclude = ('user',)
+
 
 

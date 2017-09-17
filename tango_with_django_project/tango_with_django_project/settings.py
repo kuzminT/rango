@@ -1,6 +1,6 @@
 # coding: utf-8
 import os
-from options.main import *
+from options import *
 
 """
 Django settings for tango_with_django_project project.

@@ -16,7 +16,10 @@ from django.contrib.auth import authenticate, login
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
-# from tango_with_django
+
+from django.contrib.auth.models import User
+
+from rango.models import UserProfile
 
 CACHE_TTL = getattr(settings, 'CACHE_TTL', DEFAULT_TIMEOUT)
 
@@ -283,6 +286,57 @@ def visitor_cookie_handler(request):
 
     # Update/set the visits cookie
     request.session['visits'] = visits
+
+@login_required
+def register_profile(request):
+    form = UserProfileForm
+    if request.method == 'POST':
+        form = UserProfileForm(request.POST, request.FILES)
+        if form.is_valid():
+            user_profile = form.save(commit=False)
+            user_profile.user = request.user
+            user_profile.save()
+
+            return HttpResponseRedirect(reverse('index'))
+        else:
+            print(form.errors)
+
+    context_dict = {'form': form}
+    return render(request, 'rango/profile_registration.html', context_dict)
+
+@login_required
+def profile(request, username):
+    try:
+        user = User.objects.get(username=username)
+    except User.DoesNotExist:
+        return HttpResponseRedirect(reverse('index'))
+
+    userprofile =  UserProfile.objects.get_or_create(user=user)[0]
+    form = UserProfileForm(
+        {'website': userprofile.website, 'picture': userprofile.picture})
+
+    if request.method == 'POST':
+        form = UserProfileForm(request.POST, request.FILES, instance=userprofile)
+        if form.is_valid():
+            form.save(commit=True)
+            return HttpResponseRedirect('profile', user.username)
+        else:
+            print(form.errors)
+
+    return render(request, 'rango/profile.html',
+                  {'userprofile': userprofile, 'selecteduser': user,
+                   'form': form})
+
+@login_required
+def list_profiles(request):
+    userprofile_list =  UserProfile.objects.all()
+
+    return render(request, 'rango/list_profiles.html',
+                  {'userprofile_list': userprofile_list}
+                  )
+
+
+
 
 
 
