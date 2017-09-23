@@ -20,9 +20,18 @@
 <body>
 <div>
     {% block sidebar_block %}
-    <div id="cats"><input class="input-medium search-query" type="text"
-name="suggestion" value="" id="suggestion" /></div>
-    {% get_category_list category %}
+<div id="sidebar">
+<ul class="nav nav-list">
+    <li class="nav-header">Type to find a category</li>
+<li>
+<form action="">
+    <input class="input-medium search-query" type="text"
+name="suggestion" value="" id="suggestion" />
+</form>
+    </li>
+</ul>
+<hr>
+<div id="cats"></div>
     {% endblock %}
 </div>
 <div>
