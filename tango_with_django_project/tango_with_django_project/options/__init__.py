@@ -2,6 +2,7 @@
 from apps import *
 from caches import *
 from auth import *
+from middleware import *
 
 DATABASES = {
     'default': {

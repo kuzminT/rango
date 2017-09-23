@@ -1,5 +1,8 @@
 <!DOCTYPE html>
 {% load staticfiles %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+<script src="{% static 'js/rango.js' %}"></script>
+<!--<script src="/js/script.js"></script>-->
 {% load compress %}
 {% load rango_template_tags %}
 <html lang="ru">
@@ -17,6 +20,8 @@
 <body>
 <div>
     {% block sidebar_block %}
+    <div id="cats"><input class="input-medium search-query" type="text"
+name="suggestion" value="" id="suggestion" /></div>
     {% get_category_list category %}
     {% endblock %}
 </div>

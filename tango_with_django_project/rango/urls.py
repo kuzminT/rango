@@ -2,16 +2,11 @@ from django.conf.urls import url
 from . import views
 from registration.backends.simple.views import RegistrationView
 
-# app_name = 'rango'
-
-# app_name = 'rango'
-
 
 class MyRegistrationView(RegistrationView):
     # def get_success_url(self, user):
     #     # return '/rango/'
     #     return url('register_profile')
-
     success_url = 'register_profile'
 
 
@@ -24,7 +19,7 @@ urlpatterns = [
     # url(r'^register/$',
     #     views.register,
     #     name='register'),
-url(r'^register/$',
+    url(r'^register/$',
         MyRegistrationView.as_view(),
         name='registration_register'
         ),
@@ -33,6 +28,7 @@ url(r'^register/$',
     url(r'^logout/$', views.user_logout, name='logout'),
     url(r'restricted/', views.restricted, name='restricted'),
     url(r'^profile/(?P<username>[\w\-]+)/$', views.profile, name='profile'),
-    url(r'^profiles/$', views.list_profiles, name='list_profiles')
+    url(r'^profiles/$', views.list_profiles, name='list_profiles'),
+    url(r'^like/$', views.like_category, name='like_category')
 ]
 

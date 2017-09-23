@@ -19,6 +19,8 @@ from django.contrib.auth import logout
 
 from django.contrib.auth.models import User
 
+from django.shortcuts import redirect
+
 from rango.models import UserProfile
 
 CACHE_TTL = getattr(settings, 'CACHE_TTL', DEFAULT_TIMEOUT)
@@ -86,7 +88,7 @@ def register(request):
                    })
 
 
-#@cache_page(CACHE_TTL)
+# @cache_page(CACHE_TTL)
 def index(request):
     print(settings.user_ip)
     request.session.set_test_cookie()
@@ -112,7 +114,7 @@ def about(request):
     response =  render(request, 'rango/about.html', context=context_dict)
     return response
 
-@cache_page(CACHE_TTL)
+# @cache_page(CACHE_TTL)
 def show_category(request, category_name_slug):
     # Create a context dictionary which we can pass
     # to the template rendering engine.
@@ -149,6 +151,7 @@ def show_category(request, category_name_slug):
     pages = Page.objects.filter(category=category)
     context_dict['category'] = category
     context_dict['pages'] = pages
+    print('Likes %d' % category.likes)
 
     # Go render the response and return it to the client.
     return render(request, 'rango/category.html', context_dict)
@@ -309,7 +312,8 @@ def profile(request, username):
     try:
         user = User.objects.get(username=username)
     except User.DoesNotExist:
-        return HttpResponseRedirect(reverse('index'))
+        # return HttpResponseRedirect(reverse('index'))
+        return redirect('index')
 
     userprofile =  UserProfile.objects.get_or_create(user=user)[0]
     form = UserProfileForm(
@@ -319,13 +323,15 @@ def profile(request, username):
         form = UserProfileForm(request.POST, request.FILES, instance=userprofile)
         if form.is_valid():
             form.save(commit=True)
-            return HttpResponseRedirect('profile', user.username)
+            # return HttpResponseRedirect(reverse('profile', user.username) )
+            return redirect('profile', user.username)
         else:
             print(form.errors)
 
     return render(request, 'rango/profile.html',
                   {'userprofile': userprofile, 'selecteduser': user,
                    'form': form})
+
 
 @login_required
 def list_profiles(request):
@@ -334,6 +340,20 @@ def list_profiles(request):
     return render(request, 'rango/list_profiles.html',
                   {'userprofile_list': userprofile_list}
                   )
+
+@login_required
+def like_category(request):
+    cat_id = None
+    if request.method == 'GET':
+        cat_id = request.GET['category_id']
+        likes = 0
+        if cat_id:
+            cat =  Category.objects.get(id=int(cat_id))
+            if cat:
+                likes = cat.likes + 1
+                cat.likes = likes
+                cat.save()
+    return HttpResponse(likes)
 
 
 
